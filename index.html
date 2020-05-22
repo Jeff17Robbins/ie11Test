@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+  <script>
+function _instanceof(left, right) { if (right != null && typeof Symbol !== "undefined" && right[Symbol.hasInstance]) { return !!right[Symbol.hasInstance](left); } else { return left instanceof right; } }
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!_instanceof(instance, Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function () { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _wrapNativeSuper(Class) { var _cache = typeof Map === "function" ? new Map() : undefined; _wrapNativeSuper = function _wrapNativeSuper(Class) { if (Class === null || !_isNativeFunction(Class)) return Class; if (typeof Class !== "function") { throw new TypeError("Super expression must either be null or a function"); } if (typeof _cache !== "undefined") { if (_cache.has(Class)) return _cache.get(Class); _cache.set(Class, Wrapper); } function Wrapper() { return _construct(Class, arguments, _getPrototypeOf(this).constructor); } Wrapper.prototype = Object.create(Class.prototype, { constructor: { value: Wrapper, enumerable: false, writable: true, configurable: true } }); return _setPrototypeOf(Wrapper, Class); }; return _wrapNativeSuper(Class); }
+
+function _construct(Parent, args, Class) { if (_isNativeReflectConstruct()) { _construct = Reflect.construct; } else { _construct = function _construct(Parent, args, Class) { var a = [null]; a.push.apply(a, args); var Constructor = Function.bind.apply(Parent, a); var instance = new Constructor(); if (Class) _setPrototypeOf(instance, Class.prototype); return instance; }; } return _construct.apply(null, arguments); }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeFunction(fn) { return Function.toString.call(fn).indexOf("[native code]") !== -1; }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var HowtoTooltip = /*#__PURE__*/function (_HTMLElement) {
+  "use strict";
+
+  _inherits(HowtoTooltip, _HTMLElement);
+
+  var _super = _createSuper(HowtoTooltip);
+
+  /**
+  * The constructor does work that needs to be executed _exactly_ once.
+  */
+  function HowtoTooltip() {
+    var _this;
+
+    _classCallCheck(this, HowtoTooltip);
+
+    _this = _super.call(this); // These functions are used in a bunch of places, and always need to
+    // bind the correct `this` reference, so do it once.
+
+    _this._show = _this._show.bind(_assertThisInitialized(_this));
+    _this._hide = _this._hide.bind(_assertThisInitialized(_this));
+    return _this;
+  }
+  /**
+   * `connectedCallback()` fires when the element is inserted into the DOM.
+   * It's a good place to set the initial `role`, `tabindex`, internal state,
+   * and install event listeners.
+   */
+
+
+  _createClass(HowtoTooltip, [{
+    key: "connectedCallback",
+    value: function connectedCallback() {
+      if (!this.hasAttribute('role')) this.setAttribute('role', 'tooltip');
+      if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', -1);
+
+      this._hide(); // The element that triggers the tooltip references the tooltip
+      // element with `aria-describedby`.
+
+
+      this._target = document.querySelector('[aria-describedby=' + this.id + ']');
+      if (!this._target) return; // The tooltip needs to listen to `focus`/`blur` events from the target,
+      // as well as `hover` events over the target.
+
+      this._target.addEventListener('focus', this._show);
+
+      this._target.addEventListener('blur', this._hide);
+
+      this._target.addEventListener('mouseenter', this._show);
+
+      this._target.addEventListener('mouseleave', this._hide);
+    }
+    /**
+     * `disconnectedCallback()` unregisters the event listeners that were set up
+     * in `connectedCallback()`.
+     */
+
+  }, {
+    key: "disconnectedCallback",
+    value: function disconnectedCallback() {
+      if (!this._target) return; // Remove the existing listeners, so that they don't trigger even though
+      // there's no tooltip to show.
+
+      this._target.removeEventListener('focus', this._show);
+
+      this._target.removeEventListener('blur', this._hide);
+
+      this._target.removeEventListener('mouseenter', this._show);
+
+      this._target.removeEventListener('mouseleave', this._hide);
+
+      this._target = null;
+    }
+  }, {
+    key: "_show",
+    value: function _show() {
+      this.hidden = false;
+    }
+  }, {
+    key: "_hide",
+    value: function _hide() {
+      this.hidden = true;
+    }
+  }]);
+
+  return HowtoTooltip;
+}( /*#__PURE__*/_wrapNativeSuper(HTMLElement));
+
+window.customElements.define('howto-tooltip', HowtoTooltip);  
+  </script>
+ <div class="text">
+   <label for="name">Your name:</label>
+   <input id="name" aria-describedby="tp1"/>
+   <howto-tooltip id="tp1">Ideally your name is Batman</howto-tooltip>
+   <br>
+   <label for="cheese">Favourite type of cheese: </label>
+   <input id="cheese" aria-describedby="tp2"/>
+   <howto-tooltip id="tp2">Help I am trapped inside a tooltip message</howto-tooltip>
+</div>
+</body>
+</html>
