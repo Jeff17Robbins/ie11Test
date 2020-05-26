@@ -6,20 +6,19 @@
   <title>test</title>
   
   <script>
-    (function() {
-      'use strict';
-
-      (function() {
-        if (void 0 === window.Reflect || void 0 === window.customElements || window.customElements.polyfillWrapFlushCallback) return;
-        const a = HTMLElement;
-        window.HTMLElement = {
-            HTMLElement: function HTMLElement() {
-                return Reflect.construct(a, [], this.constructor)
+    if (window.Reflect && window.customElements) {
+        const BuiltInHTMLElement = HTMLElement;
+        const wrapperForTheName = {
+            'HTMLElement': function HTMLElement() {
+                return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
             }
-        }.HTMLElement, HTMLElement.prototype = a.prototype, HTMLElement.prototype.constructor = HTMLElement, Object.setPrototypeOf(HTMLElement, a);
-      })();
-      
-    }());
+        };
+        window.HTMLElement =
+            wrapperForTheName['HTMLElement'];
+        HTMLElement.prototype = BuiltInHTMLElement.prototype;
+        HTMLElement.prototype.constructor = HTMLElement;
+        Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
+    }
   </script>
 
   <script src="https://unpkg.com/@webcomponents/webcomponentsjs@2.4.3/webcomponents-loader.js"></script>
