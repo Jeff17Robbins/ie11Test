@@ -188,130 +188,126 @@
       return _getPrototypeOf(o);
     }
 
+    var HowtoTooltip = /*#__PURE__*/ function(_HTMLElement) {
+      "use strict";
 
-    document.addEventListener('WebComponentsReady', function(e) {
-      console.log('WebComponentsReady!!!');
+      _inherits(HowtoTooltip, _HTMLElement);
 
-      var HowtoTooltip = /*#__PURE__*/ function(_HTMLElement) {
-        "use strict";
+      var _super = _createSuper(HowtoTooltip);
 
-        _inherits(HowtoTooltip, _HTMLElement);
+      /**
+       * The constructor does work that needs to be executed _exactly_ once.
+       */
+      function HowtoTooltip() {
+        var _this;
 
-        var _super = _createSuper(HowtoTooltip);
+        _classCallCheck(this, HowtoTooltip);
 
-        /**
-         * The constructor does work that needs to be executed _exactly_ once.
-         */
-        function HowtoTooltip() {
-          var _this;
+        _this = _super.call(this); // These functions are used in a bunch of places, and always need to
+        // bind the correct `this` reference, so do it once.
 
-          _classCallCheck(this, HowtoTooltip);
+        _this._show = _this._show.bind(_assertThisInitialized(_this));
+        _this._hide = _this._hide.bind(_assertThisInitialized(_this));
+        return _this;
+      }
+      /**
+       * `connectedCallback()` fires when the element is inserted into the DOM.
+       * It's a good place to set the initial `role`, `tabindex`, internal state,
+       * and install event listeners.
+       */
 
-          _this = _super.call(this); // These functions are used in a bunch of places, and always need to
-          // bind the correct `this` reference, so do it once.
 
-          _this._show = _this._show.bind(_assertThisInitialized(_this));
-          _this._hide = _this._hide.bind(_assertThisInitialized(_this));
-          return _this;
+      _createClass(HowtoTooltip, [{
+        key: "connectedCallback",
+        value: function connectedCallback() {
+            if (!this.hasAttribute('role')) this.setAttribute('role', 'tooltip');
+            if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', -1);
+
+            this._hide(); // The element that triggers the tooltip references the tooltip
+            // element with `aria-describedby`.
+
+
+            this._target = document.querySelector('[aria-describedby=' + this.id + ']');
+            if (!this._target) return; // The tooltip needs to listen to `focus`/`blur` events from the target,
+            // as well as `hover` events over the target.
+
+            this._target.addEventListener('focus', this._show);
+
+            this._target.addEventListener('blur', this._hide);
+
+            this._target.addEventListener('mouseenter', this._show);
+
+            this._target.addEventListener('mouseleave', this._hide);
+          }
+          /**
+           * `disconnectedCallback()` unregisters the event listeners that were set up
+           * in `connectedCallback()`.
+           */
+
+      }, {
+        key: "disconnectedCallback",
+        value: function disconnectedCallback() {
+          if (!this._target) return; // Remove the existing listeners, so that they don't trigger even though
+          // there's no tooltip to show.
+
+          this._target.removeEventListener('focus', this._show);
+
+          this._target.removeEventListener('blur', this._hide);
+
+          this._target.removeEventListener('mouseenter', this._show);
+
+          this._target.removeEventListener('mouseleave', this._hide);
+
+          this._target = null;
         }
-        /**
-         * `connectedCallback()` fires when the element is inserted into the DOM.
-         * It's a good place to set the initial `role`, `tabindex`, internal state,
-         * and install event listeners.
-         */
-
-
-        _createClass(HowtoTooltip, [{
-          key: "connectedCallback",
-          value: function connectedCallback() {
-              if (!this.hasAttribute('role')) this.setAttribute('role', 'tooltip');
-              if (!this.hasAttribute('tabindex')) this.setAttribute('tabindex', -1);
-
-              this._hide(); // The element that triggers the tooltip references the tooltip
-              // element with `aria-describedby`.
-
-
-              this._target = document.querySelector('[aria-describedby=' + this.id + ']');
-              if (!this._target) return; // The tooltip needs to listen to `focus`/`blur` events from the target,
-              // as well as `hover` events over the target.
-
-              this._target.addEventListener('focus', this._show);
-
-              this._target.addEventListener('blur', this._hide);
-
-              this._target.addEventListener('mouseenter', this._show);
-
-              this._target.addEventListener('mouseleave', this._hide);
-            }
-            /**
-             * `disconnectedCallback()` unregisters the event listeners that were set up
-             * in `connectedCallback()`.
-             */
-
-        }, {
-          key: "disconnectedCallback",
-          value: function disconnectedCallback() {
-            if (!this._target) return; // Remove the existing listeners, so that they don't trigger even though
-            // there's no tooltip to show.
-
-            this._target.removeEventListener('focus', this._show);
-
-            this._target.removeEventListener('blur', this._hide);
-
-            this._target.removeEventListener('mouseenter', this._show);
-
-            this._target.removeEventListener('mouseleave', this._hide);
-
-            this._target = null;
-          }
-        }, {
-          key: "_show",
-          value: function _show() {
-            this.hidden = false;
-          }
-        }, {
-          key: "_hide",
-          value: function _hide() {
-            this.hidden = true;
-          }
-        }]);
-
-        return HowtoTooltip;
-      }( /*#__PURE__*/ _wrapNativeSuper(HTMLElement));
-
-      window.customElements.define('howto-tooltip', HowtoTooltip);
-
-      var PrintableFormElement = /*#__PURE__*/ function(_HTMLFormElement) {
-        "use strict";
-
-        _inherits(PrintableFormElement, _HTMLFormElement);
-
-        var _super = _createSuper(PrintableFormElement);
-
-        function PrintableFormElement() {
-          var _this;
-
-          _classCallCheck(this, PrintableFormElement);
-
-          _this = _super.call(this);
-          console.log("created: ", _assertThisInitialized(_this));
-          return _this;
+      }, {
+        key: "_show",
+        value: function _show() {
+          this.hidden = false;
         }
+      }, {
+        key: "_hide",
+        value: function _hide() {
+          this.hidden = true;
+        }
+      }]);
 
-        _createClass(PrintableFormElement, [{
-          key: "print",
-          value: function print() {
-            console.log(this.elements);
-          }
-        }]);
+      return HowtoTooltip;
+    }( /*#__PURE__*/ _wrapNativeSuper(HTMLElement));
 
-        return PrintableFormElement;
-      }( /*#__PURE__*/ _wrapNativeSuper(HTMLFormElement));
+    window.customElements.define('howto-tooltip', HowtoTooltip);
 
-      window.customElements.define("printable-form", PrintableFormElement, {
-        extends: "form"
-      });
+    var PrintableFormElement = /*#__PURE__*/ function(_HTMLFormElement) {
+      "use strict";
+
+      _inherits(PrintableFormElement, _HTMLFormElement);
+
+      var _super = _createSuper(PrintableFormElement);
+
+      function PrintableFormElement() {
+        var _this;
+
+        _classCallCheck(this, PrintableFormElement);
+
+        _this = _super.call(this);
+        console.log("created: ", _assertThisInitialized(_this));
+        return _this;
+      }
+
+      _createClass(PrintableFormElement, [{
+        key: "print",
+        value: function print() {
+          console.log(this.elements);
+        }
+      }]);
+
+      return PrintableFormElement;
+    }( /*#__PURE__*/ _wrapNativeSuper(HTMLFormElement));
+
+    window.customElements.define("printable-form", PrintableFormElement, {
+      extends: "form"
     });
+
   </script>
   <form is="printable-form" class="text">
     <label for="name">Your name:</label>
