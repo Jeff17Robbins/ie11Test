@@ -4,34 +4,34 @@
 <head>
   <meta charset="utf-8">
   <title>test</title>
-  
+
   <script>
     if (window.Reflect && window.customElements) {
-      
-      
+
+
       // patch HTMLElement
       const BuiltInHTMLElement = HTMLElement;
       const wrapperForTheNameHTMLElement = {
-          'HTMLElement': function HTMLElement() {
-              return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
-          }
+        'HTMLElement': function HTMLElement() {
+          return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
+        }
       };
       window.HTMLElement =
-          wrapperForTheNameHTMLElement['HTMLElement'];
+        wrapperForTheNameHTMLElement['HTMLElement'];
       HTMLElement.prototype = BuiltInHTMLElement.prototype;
       HTMLElement.prototype.constructor = HTMLElement;
       Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
 
-      
+
       // patch HTMLFormElement
       const BuiltInHTMLFormElement = HTMLFormElement;
       const wrapperForTheNameHTMLFormElement = {
-          'HTMLFormElement': function HTMLFormElement() {
-              return Reflect.construct(BuiltInHTMLFormElement, [], this.constructor);
-          }
+        'HTMLFormElement': function HTMLFormElement() {
+          return Reflect.construct(BuiltInHTMLFormElement, [], this.constructor);
+        }
       };
       window.HTMLFormElement =
-          wrapperForTheNameHTMLFormElement['HTMLFormElement'];
+        wrapperForTheNameHTMLFormElement['HTMLFormElement'];
       HTMLFormElement.prototype = BuiltInHTMLFormElement.prototype;
       HTMLFormElement.prototype.constructor = HTMLFormElement;
       Object.setPrototypeOf(HTMLFormElement, BuiltInHTMLFormElement);
@@ -205,7 +205,7 @@
       return _getPrototypeOf(o);
     }
 
-    
+
     document.addEventListener('WebComponentsReady', function(e) {
       console.log('WebComponentsReady!!!');
 
@@ -298,7 +298,7 @@
 
       window.customElements.define('howto-tooltip', HowtoTooltip);
 
-      var PrintableFormElement = /*#__PURE__*/function (_HTMLFormElement) {
+      var PrintableFormElement = /*#__PURE__*/ function(_HTMLFormElement) {
         "use strict";
 
         _inherits(PrintableFormElement, _HTMLFormElement);
@@ -315,21 +315,20 @@
           return _this;
         }
 
-      _createClass(PrintableFormElement, [{
-        key: "print",
-        value: function print() {
-          console.log(this.elements);
-        }
-      }]);
+        _createClass(PrintableFormElement, [{
+          key: "print",
+          value: function print() {
+            console.log(this.elements);
+          }
+        }]);
 
-      return PrintableFormElement;
-    }( /*#__PURE__*/_wrapNativeSuper(HTMLFormElement));
+        return PrintableFormElement;
+      }( /*#__PURE__*/ _wrapNativeSuper(HTMLFormElement));
 
-    window.customElements.define("printable-form", PrintableFormElement, {
-      extends: "form"
+      window.customElements.define("printable-form", PrintableFormElement, {
+        extends: "form"
+      });
     });
-  });    
-    
   </script>
   <form is="printable-form" class="text">
     <label for="name">Your name:</label>
