@@ -277,6 +277,38 @@
     }( /*#__PURE__*/ _wrapNativeSuper(HTMLElement));
 
     window.customElements.define('howto-tooltip', HowtoTooltip);
+    
+    var PrintableFormElement = /*#__PURE__*/function (_HTMLFormElement) {
+      "use strict";
+
+      _inherits(PrintableFormElement, _HTMLFormElement);
+
+      var _super = _createSuper(PrintableFormElement);
+
+      function PrintableFormElement() {
+        var _this;
+
+        _classCallCheck(this, PrintableFormElement);
+
+        _this = _super.call(this);
+        console.log("created: ", _assertThisInitialized(_this));
+        return _this;
+      }
+
+    _createClass(PrintableFormElement, [{
+      key: "print",
+      value: function print() {
+        console.log(this.elements);
+      }
+    }]);
+
+    return PrintableFormElement;
+  }( /*#__PURE__*/_wrapNativeSuper(HTMLFormElement));
+
+  customElements.define("printable-form", PrintableFormElement, {
+    extends: "form"
+  });
+    
   </script>
   <div class="text">
     <label for="name">Your name:</label>
