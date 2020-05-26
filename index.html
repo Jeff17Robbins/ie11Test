@@ -7,17 +7,34 @@
   
   <script>
     if (window.Reflect && window.customElements) {
-        const BuiltInHTMLElement = HTMLElement;
-        const wrapperForTheName = {
-            'HTMLElement': function HTMLElement() {
-                return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
-            }
-        };
-        window.HTMLElement =
-            wrapperForTheName['HTMLElement'];
-        HTMLElement.prototype = BuiltInHTMLElement.prototype;
-        HTMLElement.prototype.constructor = HTMLElement;
-        Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
+      
+      
+      // patch HTMLElement
+      const BuiltInHTMLElement = HTMLElement;
+      const wrapperForTheNameHTMLElement = {
+          'HTMLElement': function HTMLElement() {
+              return Reflect.construct(BuiltInHTMLElement, [], this.constructor);
+          }
+      };
+      window.HTMLElement =
+          wrapperForTheNameHTMLElement['HTMLElement'];
+      HTMLElement.prototype = BuiltInHTMLElement.prototype;
+      HTMLElement.prototype.constructor = HTMLElement;
+      Object.setPrototypeOf(HTMLElement, BuiltInHTMLElement);
+
+      
+      // patch HTMLFormElement
+      const BuiltInHTMLFormElement = HTMLFormElement;
+      const wrapperForTheNameHTMLFormElement = {
+          'HTMLFormElement': function HTMLFormElement() {
+              return Reflect.construct(BuiltInHTMLFormElement, [], this.constructor);
+          }
+      };
+      window.HTMLFormElement =
+          wrapperForTheNameHTMLFormElement['HTMLFormElement'];
+      HTMLFormElement.prototype = BuiltInHTMLFormElement.prototype;
+      HTMLFormElement.prototype.constructor = HTMLFormElement;
+      Object.setPrototypeOf(HTMLFormElement, BuiltInHTMLFormElement);
     }
   </script>
 
